@@ -26,8 +26,7 @@ seq_len = 3
 
 # Read sequence
 def add_next(x, y, grid, dir, sequence, num=seq_len):
-    if num == 0:
-        print(sequence)
+    if num == 0
         return sequence
     sequence.append(grid[y][x])
 
@@ -43,7 +42,6 @@ def add_next(x, y, grid, dir, sequence, num=seq_len):
         y += 1
 
     if not(0 <= x < len(grid[0])) or not(0 <= y < len(grid)):
-        print(sequence)
         return sequence
 
     return add_next(x, y, grid, dir, sequence=sequence, num=num-1)
