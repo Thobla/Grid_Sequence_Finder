@@ -1,18 +1,18 @@
 from enum import Enum
 import csv
-data = [
-    [23, 34, 55, 43, 84, 32],
-    [33, 11, 55, 53, 43, 50],
-    [33, 24, 54, 22, 43, 146],
-    [33, 11, 55, 53, 103, 10]
-]
+import math
+
+grid = []
+with open("grid3.txt") as f:
+    for line in f:
+        grid.append([int(x) for x in line.strip().split()]) # write to array
 
 ##########  PART 1 ######################
 # Convert to csv file
-with open ("csv_file.csv", mode='w', newline='') as file:
-    writer = csv.writer(file)
+with open ("csv_file.csv", mode='w', newline='') as f:
+    writer = csv.writer(f)
 
-    writer.writerows(data)
+    writer.writerows(grid)
 
 ##########  PART 2 #######################
 class Direction(Enum):
@@ -22,13 +22,14 @@ class Direction(Enum):
     DOWNLEFT = 4
 
 
-seq_len = 3
+seq_len = 4
 
 # Read sequence
 def add_next(x, y, grid, dir, sequence, num=seq_len):
-    if num == 0
+    if num == 0:
         return sequence
-    sequence.append(grid[y][x])
+    sequence[0].append(grid[y][x])
+    sequence[1].append((x, y))
 
     if dir == Direction.RIGHT:
         x += 1
@@ -46,26 +47,29 @@ def add_next(x, y, grid, dir, sequence, num=seq_len):
 
     return add_next(x, y, grid, dir, sequence=sequence, num=num-1)
 
+
 # Innitialize answer
 pos = (0, 0)
 dir = Direction.RIGHT # make 
-seq = data[0][:seq_len]
-max_val = sum(seq)
+seq = grid[0][:seq_len]
+indecies = [(0, y) for y in range(seq_len)]
+max_val = math.prod(seq)
 
 # Find highest sequence
-for x in range(len(data[0])):
-    for y in range(len(data)):
+for x in range(len(grid[0])):
+    for y in range(len(grid)):
         for temp_dir in Direction:
-            new_seq = add_next(x, y, data, temp_dir, sequence=[])
-            if sum(new_seq) >= max_val:
-                max_val = sum(new_seq)
+            new_seq, new_ind = add_next(x, y, grid, temp_dir, sequence=([],[]))
+            if math.prod(new_seq) >= max_val:
+                max_val = math.prod(new_seq)
                 seq = new_seq
+                indecies = new_ind
                 dir = temp_dir
                 pos = (x, y)
 
-
 # Print answer
-print("sum = ", max_val)
-print("sequence = ", seq)
-print("grid position = ", pos)
+print("grid start position = ", pos)
 print("direction = ", dir)
+print("sequence = ", seq)
+print("indecies = ", indecies)
+print("prod = ", max_val)
